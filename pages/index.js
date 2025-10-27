@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Paragraph = styled.div`
+const Button = styled.button`
   gap: 1rem;
   padding: 1rem;
 `;
@@ -35,12 +35,12 @@ export default function HomePage({ language }) {
           different methods, drawing with different tools, and bringing people
           together over different excuses.
         </div>
-        <divh>
+        <div>
           Currently based in Tallinn, Estonia, she teaches Graphic Design to
           Bachelor&apos;s and Master&apos;s students at the Estonian Academy of
           Arts (EKA). ({language})
-        </divh>
-        <div>more about teaching</div>
+        </div>
+        <Button>more about teaching</Button>
         <div>
           Education: <br></br>BA in Graphic Design (Federal University of Minas
           Gerais, Brazil 2013–2018) BA in Graphic Design (Budapest Metropolitan

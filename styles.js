@@ -20,6 +20,7 @@ export default createGlobalStyle`
     margin: 0;
     padding: 0;
     height: 100%;
+}
     
   body {
   font-family: 'Helvetica', sans-serif;
