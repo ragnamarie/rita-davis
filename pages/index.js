@@ -13,6 +13,10 @@ export default function HomePage({ language }) {
   return (
     <div style={styles}>
       <h1>Hello ({language})</h1>
+      <p>This page uses the green/pink language theme for the selector.</p>
     </div>
   );
 }
+
+// Optional: tag to indicate which theme to use
+HomePage.pageTheme = "greenPink";

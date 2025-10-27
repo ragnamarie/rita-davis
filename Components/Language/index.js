@@ -14,31 +14,26 @@ const List = styled.ul`
   z-index: 9999;
 `;
 
-const BoxEN = styled.span`
+const Box = styled.span`
   padding: 0.5rem 1rem;
   cursor: pointer;
-  background-color: #ffdbf6;
-  color: #007b1d;
+  background-color: ${(props) => props.theme[props.language].bg};
+  color: ${(props) => props.theme[props.language].color};
+  transition: background-color 0.2s, color 0.2s;
 `;
 
-const BoxPT = styled.span`
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  background-color: #007b1d;
-  color: #ffdbf6;
-`;
-
-export default function Language({ onSelect, language }) {
-  // Choose the component dynamically based on current language
-  const CurrentBox = language === "EN" ? BoxEN : BoxPT;
-
+export default function Languages({ onSelect, language, theme }) {
   return (
     <List>
       <li>
-        <CurrentBox onClick={() => onSelect("EN")}>EN</CurrentBox>
+        <Box language={language} theme={theme} onClick={() => onSelect("EN")}>
+          EN
+        </Box>
       </li>
       <li>
-        <CurrentBox onClick={() => onSelect("PT")}>PT</CurrentBox>
+        <Box language={language} theme={theme} onClick={() => onSelect("PT")}>
+          PT
+        </Box>
       </li>
     </List>
   );
