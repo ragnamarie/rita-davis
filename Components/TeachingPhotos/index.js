@@ -16,11 +16,10 @@ const Photo = styled.img`
 `;
 
 export default function TeachingPhotos() {
-  // assuming you have teaching1.jpg, teaching2.jpg, ... teaching8.jpg in /public
-  const photoCount = 8;
+  const photoCount = 28;
   const photos = Array.from(
     { length: photoCount },
-    (_, i) => `/teaching${i + 1}.jpg`
+    (_, i) => `/teaching${i + 1}.jpeg`
   );
 
   return (
