@@ -18,7 +18,7 @@ const Box = styled.span`
   transition: background-color 0.2s, color 0.2s;
 `;
 
-export default function Languages({ onSelect, language, theme }) {
+export default function Language({ onSelect, language, theme }) {
   return (
     <List>
       <li>
