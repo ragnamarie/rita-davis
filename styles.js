@@ -25,6 +25,8 @@ export default createGlobalStyle`
   body {
   font-family: 'Helvetica', sans-serif;
   font-weight: 700;
+  font-size: 21px;
+  line-height: 1.2;
   }
 
 `;

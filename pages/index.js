@@ -27,7 +27,7 @@ export default function HomePage({ language }) {
     backgroundColor: isEN ? "#007b1d" : "#ffdbf6",
     color: isEN ? "#ffdbf6" : "#007b1d",
     display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr", // two columns
+    gridTemplateColumns: "1.5fr 1.5fr 0.5fr", // two columns
     gap: "2rem", // space between columns and rows
     padding: "2rem",
     alignItems: "start",
