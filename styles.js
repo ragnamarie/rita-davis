@@ -23,6 +23,7 @@ export default createGlobalStyle`
     
   body {
   font-family: 'Helvetica', sans-serif;
+  font-weight: 700;
   }
 
 `;

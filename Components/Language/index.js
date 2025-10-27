@@ -4,13 +4,9 @@ const List = styled.ul`
   display: flex;
   gap: 1rem;
   list-style: none;
-  padding: 0.5rem 1rem;
-  font-weight: 700;
-
   position: fixed;
   top: 20px;
   right: 20px;
-  padding: 1rem;
   z-index: 9999;
 `;
 
