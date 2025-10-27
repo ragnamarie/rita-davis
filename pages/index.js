@@ -1,13 +1,22 @@
 import styled from "styled-components";
 
-const Button = styled.button`
-  gap: 1rem;
-  padding: 1rem;
-`;
-
 const Column = styled.div`
   display: grid;
   gap: 1rem;
+`;
+
+const CircleLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 3rem;
+  border: 2px solid
+    ${({ language }) => (language === "EN" ? "#ffdbf6" : "#007b1d")};
+  border-radius: 50%;
+  color: ${({ language }) => (language === "EN" ? "#ffdbf6" : "#007b1d")};
+  text-decoration: none;
+  text-align: center;
 `;
 
 export default function HomePage({ language }) {
@@ -38,9 +47,11 @@ export default function HomePage({ language }) {
         <div>
           Currently based in Tallinn, Estonia, she teaches Graphic Design to
           Bachelor&apos;s and Master&apos;s students at the Estonian Academy of
-          Arts (EKA). ({language})
+          Arts (EKA).
         </div>
-        <Button>more about teaching</Button>
+        <CircleLink href="/teaching" language={language}>
+          more about teaching
+        </CircleLink>
         <div>
           Education: <br></br>BA in Graphic Design (Federal University of Minas
           Gerais, Brazil 2013–2018) BA in Graphic Design (Budapest Metropolitan
