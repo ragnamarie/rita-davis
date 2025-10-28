@@ -44,7 +44,7 @@ export default function TeachingPage({ language }) {
             {isEN ? (
               <>
                 A Gigantic Human Printing Press workshop with Oliver Long and
-                Patrick Zavadskis. for EKA GD Bachelor. Tallinn, March 2023.
+                Patrick Zavadskis. For EKA GD Bachelor. Tallinn, March 2023.
                 <br />
                 <br />
                 Calendar workshop with Cecilia Breña. EKA GD Bachelor. Tallinn,
