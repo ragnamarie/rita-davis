@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { ChevronLeft, ChevronRight } from "lucide-react"; // icons for arrows
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -22,10 +22,11 @@ const GalleryContainer = styled.div`
   overflow-y: hidden;
   scroll-behavior: smooth;
   display: flex;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
   &::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+    display: none;
   }
 `;
 
@@ -41,44 +42,86 @@ const Photo = styled.img`
   flex-shrink: 0;
 `;
 
+const ArrowLine = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  transform: translateY(-50%);
+  pointer-events: none; /* only the buttons should capture clicks */
+`;
+
 const ArrowButton = styled.button`
   all: unset;
+  cursor: pointer;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  cursor: pointer;
-  border: 2px solid var(--color-surface-white, #fff);
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  width: 48px;
-  height: 48px;
+  border: 3px solid #ff9e33;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s ease;
   background: transparent;
   z-index: 10;
+  pointer-events: auto; /* allow clicks */
+  color: #ff9e33;
 
   &:hover {
-    background: var(--color-just-black, #000);
-    border-color: var(--color-just-black, #000);
-    color: var(--color-surface-white, #fff);
+    background: #ff9e33;
+    border-color: #ff9e33;
+    color: #003db2;
   }
 
   &.left {
-    left: 1rem;
+    left: 0;
   }
 
   &.right {
-    right: 1rem;
+    right: 0;
   }
 `;
 
+const ArrowConnector = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 25px; /* offset to leave space for buttons */
+  right: 25px;
+  height: 3px;
+  background: #ff9e33;
+  transform: translateY(-50%);
+`;
+
 export default function TeachingPhotos() {
-  const galleries = [useRef(null), useRef(null)];
+  const photosOne = Array.from(
+    { length: 7 },
+    (_, i) => `/teaching${i + 1}.jpeg`
+  );
+  const photosTwo = Array.from(
+    { length: 7 },
+    (_, i) => `/teaching${i + 8}.jpeg`
+  );
+  const photosThree = Array.from(
+    { length: 7 },
+    (_, i) => `/teaching${i + 15}.jpeg`
+  );
+  const photosFour = Array.from(
+    { length: 7 },
+    (_, i) => `/teaching${i + 22}.jpeg`
+  );
+
+  const photoSets = [photosOne, photosTwo, photosThree, photosFour];
+
+  // Create a ref for each gallery dynamically
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const galleries = photoSets.map(() => useRef(null));
 
   const scrollGallery = (ref, direction) => {
     if (ref.current) {
-      const scrollAmount = window.innerWidth * 0.8; // scroll ~80% of viewport
+      const scrollAmount = window.innerWidth * 0.8;
       ref.current.scrollBy({
         left: direction === "right" ? scrollAmount : -scrollAmount,
         behavior: "smooth",
@@ -86,27 +129,10 @@ export default function TeachingPhotos() {
     }
   };
 
-  const photosOne = Array.from(
-    { length: 5 },
-    (_, i) => `/teaching${i + 1}.jpeg`
-  );
-  const photosTwo = Array.from(
-    { length: 5 },
-    (_, i) => `/teaching${i + 6}.jpeg`
-  );
-
   return (
     <PageWrapper>
-      {[photosOne, photosTwo].map((photoSet, index) => (
+      {photoSets.map((photoSet, index) => (
         <GalleryWrapper key={index}>
-          <ArrowButton
-            className="left"
-            aria-label="previous"
-            onClick={() => scrollGallery(galleries[index], "left")}
-          >
-            <ChevronLeft size={24} />
-          </ArrowButton>
-
           <GalleryContainer ref={galleries[index]}>
             <GalleryTrack>
               {photoSet.map((src, j) => (
@@ -115,13 +141,24 @@ export default function TeachingPhotos() {
             </GalleryTrack>
           </GalleryContainer>
 
-          <ArrowButton
-            className="right"
-            aria-label="next"
-            onClick={() => scrollGallery(galleries[index], "right")}
-          >
-            <ChevronRight size={24} />
-          </ArrowButton>
+          {/* Single line with arrows */}
+          <ArrowLine>
+            <ArrowConnector />
+            <ArrowButton
+              className="left"
+              aria-label="previous"
+              onClick={() => scrollGallery(galleries[index], "left")}
+            >
+              <ChevronLeft size={36} color="currentColor" />
+            </ArrowButton>
+            <ArrowButton
+              className="right"
+              aria-label="next"
+              onClick={() => scrollGallery(galleries[index], "right")}
+            >
+              <ChevronRight size={36} color="currentColor" />
+            </ArrowButton>
+          </ArrowLine>
         </GalleryWrapper>
       ))}
     </PageWrapper>
