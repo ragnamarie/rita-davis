@@ -23,7 +23,7 @@ export default function HomePage({ language }) {
   const isEN = language === "EN";
 
   const styles = {
-    height: "100vh",
+    minHeight: "100vh",
     backgroundColor: isEN ? "#007b1d" : "#ffdbf6",
     color: isEN ? "#ffdbf6" : "#007b1d",
     display: "grid",

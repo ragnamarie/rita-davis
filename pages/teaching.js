@@ -24,7 +24,7 @@ export default function TeachingPage({ language }) {
   const isEN = language === "EN";
 
   const styles = {
-    height: "65vh",
+    minHeight: "65vh",
     backgroundColor: isEN ? "#003db2" : "#ff9e33",
     color: isEN ? "#ff9e33" : "#003db2",
     display: "grid",
