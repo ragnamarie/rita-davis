@@ -131,7 +131,7 @@ export default function TeachingPage({ language }) {
           </div>
         </Column>
       </div>
-      <TeachingPhotos />
+      <TeachingPhotos language={language} />
     </>
   );
 }

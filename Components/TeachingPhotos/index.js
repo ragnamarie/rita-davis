@@ -32,11 +32,11 @@ const GalleryContainer = styled.div`
 
 const GalleryTrack = styled.div`
   display: flex;
-  padding: 1rem 2rem;
+  padding: 0rem 2rem;
 `;
 
 const Photo = styled.img`
-  height: 400px;
+  height: 350px;
   width: auto;
   object-fit: cover;
   flex-shrink: 0;
@@ -49,7 +49,7 @@ const ArrowLine = styled.div`
   width: 100%;
   height: 48px;
   transform: translateY(-50%);
-  pointer-events: none; /* only the buttons should capture clicks */
+  pointer-events: none; /* only buttons should capture clicks */
 `;
 
 const ArrowButton = styled.button`
@@ -61,20 +61,14 @@ const ArrowButton = styled.button`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 3px solid #ff9e33;
+  border: 3px solid ${(props) => props.color};
   display: flex;
   justify-content: center;
   align-items: center;
   background: transparent;
   z-index: 10;
-  pointer-events: auto; /* allow clicks */
-  color: #ff9e33;
-
-  &:hover {
-    background: #ff9e33;
-    border-color: #ff9e33;
-    color: #003db2;
-  }
+  pointer-events: auto;
+  color: ${(props) => props.color};
 
   &.left {
     left: 0;
@@ -88,14 +82,20 @@ const ArrowButton = styled.button`
 const ArrowConnector = styled.div`
   position: absolute;
   top: 50%;
-  left: 25px; /* offset to leave space for buttons */
+  left: 25px; /* space for arrow buttons */
   right: 25px;
   height: 3px;
-  background: #ff9e33;
+  background: ${(props) => props.color};
   transform: translateY(-50%);
 `;
 
-export default function TeachingPhotos() {
+export default function TeachingPhotos({ language }) {
+  const isEN = language === "EN";
+
+  const lineColor = isEN ? "#ff9e33" : "#003db2";
+  const arrowColor = isEN ? "#ff9e33" : "#003db2";
+  const arrowHoverColor = isEN ? "#003db2" : "#ff9e33";
+
   const photosOne = Array.from(
     { length: 7 },
     (_, i) => `/teaching${i + 1}.jpeg`
@@ -143,17 +143,19 @@ export default function TeachingPhotos() {
 
           {/* Single line with arrows */}
           <ArrowLine>
-            <ArrowConnector />
+            <ArrowConnector color={lineColor} />
             <ArrowButton
               className="left"
-              aria-label="previous"
+              color={arrowColor}
+              hoverColor={arrowHoverColor}
               onClick={() => scrollGallery(galleries[index], "left")}
             >
               <ChevronLeft size={36} color="currentColor" />
             </ArrowButton>
             <ArrowButton
               className="right"
-              aria-label="next"
+              color={arrowColor}
+              hoverColor={arrowHoverColor}
               onClick={() => scrollGallery(galleries[index], "right")}
             >
               <ChevronRight size={36} color="currentColor" />
