@@ -11,7 +11,7 @@ const CircleLink = styled.a`
   justify-content: center;
   width: 100%;
   height: 3rem;
-  border: 2px solid
+  border: 3px solid
     ${({ language }) => (language === "EN" ? "#ffdbf6" : "#007b1d")};
   border-radius: 50%;
   color: ${({ language }) => (language === "EN" ? "#ffdbf6" : "#007b1d")};
