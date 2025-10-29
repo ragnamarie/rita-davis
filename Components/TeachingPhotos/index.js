@@ -36,20 +36,11 @@ const GalleryTrack = styled.div`
 `;
 
 const Photo = styled.img`
-  height: 350px;
+  height: 375px;
   width: auto;
+  padding: 1rem;
   object-fit: cover;
   flex-shrink: 0;
-`;
-
-const ArrowLine = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 48px;
-  transform: translateY(-50%);
-  pointer-events: none; /* only buttons should capture clicks */
 `;
 
 const ArrowButton = styled.button`
@@ -77,16 +68,6 @@ const ArrowButton = styled.button`
   &.right {
     right: 0;
   }
-`;
-
-const ArrowConnector = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 25px; /* space for arrow buttons */
-  right: 25px;
-  height: 3px;
-  background: ${(props) => props.color};
-  transform: translateY(-50%);
 `;
 
 export default function TeachingPhotos({ language }) {
@@ -142,25 +123,22 @@ export default function TeachingPhotos({ language }) {
           </GalleryContainer>
 
           {/* Single line with arrows */}
-          <ArrowLine>
-            <ArrowConnector color={lineColor} />
-            <ArrowButton
-              className="left"
-              color={arrowColor}
-              hoverColor={arrowHoverColor}
-              onClick={() => scrollGallery(galleries[index], "left")}
-            >
-              <ChevronLeft size={36} color="currentColor" />
-            </ArrowButton>
-            <ArrowButton
-              className="right"
-              color={arrowColor}
-              hoverColor={arrowHoverColor}
-              onClick={() => scrollGallery(galleries[index], "right")}
-            >
-              <ChevronRight size={36} color="currentColor" />
-            </ArrowButton>
-          </ArrowLine>
+          <ArrowButton
+            className="left"
+            color={arrowColor}
+            hoverColor={arrowHoverColor}
+            onClick={() => scrollGallery(galleries[index], "left")}
+          >
+            <ChevronLeft size={36} color="currentColor" />
+          </ArrowButton>
+          <ArrowButton
+            className="right"
+            color={arrowColor}
+            hoverColor={arrowHoverColor}
+            onClick={() => scrollGallery(galleries[index], "right")}
+          >
+            <ChevronRight size={36} color="currentColor" />
+          </ArrowButton>
         </GalleryWrapper>
       ))}
     </PageWrapper>
