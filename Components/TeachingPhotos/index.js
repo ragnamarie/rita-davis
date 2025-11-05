@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import styled from "styled-components";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -36,65 +35,44 @@ const GalleryTrack = styled.div`
 `;
 
 const Photo = styled.img`
-  height: 350px;
+  height: 375px;
   width: auto;
+  padding: 1rem;
   object-fit: cover;
   flex-shrink: 0;
 `;
 
-const ArrowLine = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 48px;
-  transform: translateY(-50%);
-  pointer-events: none; /* only buttons should capture clicks */
-`;
-
-const ArrowButton = styled.button`
+const TriangleButton = styled.button`
   all: unset;
   cursor: pointer;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 3px solid ${(props) => props.color};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: transparent;
   z-index: 10;
-  pointer-events: auto;
-  color: ${(props) => props.color};
+  width: 0;
+  height: 0;
 
-  &.left {
-    left: 0;
-  }
+  border-top: 25px solid transparent;
+  border-bottom: 25px solid transparent;
 
-  &.right {
-    right: 0;
-  }
-`;
+  ${({ direction, color }) =>
+    direction === "left"
+      ? `
+        border-right: 35px solid ${color};
+        left: 10px;
+      `
+      : `
+        border-left: 35px solid ${color};
+        right: 10px;
+      `}
 
-const ArrowConnector = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 25px; /* space for arrow buttons */
-  right: 25px;
-  height: 3px;
-  background: ${(props) => props.color};
-  transform: translateY(-50%);
+  transition: filter 0.2s ease;
 `;
 
 export default function TeachingPhotos({ language }) {
   const isEN = language === "EN";
 
-  const lineColor = isEN ? "#ff9e33" : "#003db2";
   const arrowColor = isEN ? "#ff9e33" : "#003db2";
-  const arrowHoverColor = isEN ? "#003db2" : "#ff9e33";
 
   const photosOne = Array.from(
     { length: 7 },
@@ -114,8 +92,6 @@ export default function TeachingPhotos({ language }) {
   );
 
   const photoSets = [photosOne, photosTwo, photosThree, photosFour];
-
-  // Create a ref for each gallery dynamically
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const galleries = photoSets.map(() => useRef(null));
 
@@ -141,26 +117,17 @@ export default function TeachingPhotos({ language }) {
             </GalleryTrack>
           </GalleryContainer>
 
-          {/* Single line with arrows */}
-          <ArrowLine>
-            <ArrowConnector color={lineColor} />
-            <ArrowButton
-              className="left"
-              color={arrowColor}
-              hoverColor={arrowHoverColor}
-              onClick={() => scrollGallery(galleries[index], "left")}
-            >
-              <ChevronLeft size={36} color="currentColor" />
-            </ArrowButton>
-            <ArrowButton
-              className="right"
-              color={arrowColor}
-              hoverColor={arrowHoverColor}
-              onClick={() => scrollGallery(galleries[index], "right")}
-            >
-              <ChevronRight size={36} color="currentColor" />
-            </ArrowButton>
-          </ArrowLine>
+          {/* Triangle arrows */}
+          <TriangleButton
+            direction="left"
+            color={arrowColor}
+            onClick={() => scrollGallery(galleries[index], "left")}
+          />
+          <TriangleButton
+            direction="right"
+            color={arrowColor}
+            onClick={() => scrollGallery(galleries[index], "right")}
+          />
         </GalleryWrapper>
       ))}
     </PageWrapper>
