@@ -32,7 +32,6 @@ const GalleryWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 60px;
 `;
 
 const Photo = styled.img`
@@ -91,6 +90,7 @@ export default function Works({ language }) {
 }
 
 // 🧩 Project Gallery Component
+// 🧩 Project Gallery Component
 function ProjectGallery({ project, isEN, buttonColor }) {
   const projectImages = imagesWorks.filter((img) => img.project === project);
   const description = projectImages[0]?.description || "";
@@ -103,19 +103,25 @@ function ProjectGallery({ project, isEN, buttonColor }) {
       (prev) => (prev - 1 + projectImages.length) % projectImages.length
     );
 
+  const hasMultipleImages = projectImages.length > 1;
+
   return (
     <GalleryWrapper>
-      <TriangleButton
-        color={buttonColor}
-        direction="left"
-        onClick={prevImage}
-      />
+      {hasMultipleImages && (
+        <TriangleButton
+          color={buttonColor}
+          direction="left"
+          onClick={prevImage}
+        />
+      )}
       <Photo src={projectImages[index].url} alt={`${project} ${index + 1}`} />
-      <TriangleButton
-        color={buttonColor}
-        direction="right"
-        onClick={nextImage}
-      />
+      {hasMultipleImages && (
+        <TriangleButton
+          color={buttonColor}
+          direction="right"
+          onClick={nextImage}
+        />
+      )}
       {description && <Title isEN={isEN}>{description}</Title>}
     </GalleryWrapper>
   );
