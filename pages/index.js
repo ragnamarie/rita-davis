@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import Works from "@/Components/Works";
 
+const StyledLink = styled.a`
+  color: ${({ language }) => (language === "EN" ? "#ffdbf6" : "#007b1d")};
+`;
+
 const Column = styled.div`
   display: grid;
   gap: 1rem;
@@ -95,7 +99,27 @@ export default function HomePage({ language }) {
               </>
             )}
           </div>
-          <div>e-mail + instagram + are.na</div>
+          <div>
+            <StyledLink href="mailto:ritadrvc@gmail.com" language={language}>
+              e-mail
+            </StyledLink>
+            &nbsp;+&nbsp;
+            <StyledLink
+              href="https://www.instagram.com/ritadavis"
+              target="_blank"
+              language={language}
+            >
+              instagram
+            </StyledLink>
+            &nbsp;+&nbsp;
+            <StyledLink
+              href="https://www.are.na/rita-davis/channels"
+              target="_blank"
+              language={language}
+            >
+              are.na
+            </StyledLink>
+          </div>
         </Column>
         <Column>
           <div>

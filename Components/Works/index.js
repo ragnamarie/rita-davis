@@ -14,11 +14,10 @@ const PageWrapper = styled.div`
 const Title = styled.h2`
   position: absolute;
   bottom: 30px;
-  font-size: 16px;
+  font-size: 21px;
   font-weight: 600;
   color: ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
   text-align: center;
-
   width: 90vw;
   max-width: 1200px;
   white-space: normal;
@@ -90,10 +89,8 @@ export default function Works({ language }) {
 }
 
 // 🧩 Project Gallery Component
-// 🧩 Project Gallery Component
 function ProjectGallery({ project, isEN, buttonColor }) {
   const projectImages = imagesWorks.filter((img) => img.project === project);
-  const description = projectImages[0]?.description || "";
 
   const [index, setIndex] = useState(0);
 
@@ -105,6 +102,11 @@ function ProjectGallery({ project, isEN, buttonColor }) {
 
   const hasMultipleImages = projectImages.length > 1;
 
+  // Choose description based on language
+  const description = isEN
+    ? projectImages[0]?.description
+    : projectImages[0]?.description_pt;
+
   return (
     <GalleryWrapper>
       {hasMultipleImages && (
@@ -115,6 +117,7 @@ function ProjectGallery({ project, isEN, buttonColor }) {
         />
       )}
       <Photo src={projectImages[index].url} alt={`${project} ${index + 1}`} />
+      {description && <Title isEN={isEN}>{description}</Title>}
       {hasMultipleImages && (
         <TriangleButton
           color={buttonColor}
@@ -122,7 +125,6 @@ function ProjectGallery({ project, isEN, buttonColor }) {
           onClick={nextImage}
         />
       )}
-      {description && <Title isEN={isEN}>{description}</Title>}
     </GalleryWrapper>
   );
 }

@@ -31,13 +31,11 @@ const GalleryContainer = styled.div`
 
 const GalleryTrack = styled.div`
   display: flex;
-  padding: 0rem 2rem;
 `;
 
 const Photo = styled.img`
   height: 375px;
   width: auto;
-  padding: 1rem;
   object-fit: cover;
   flex-shrink: 0;
 `;
