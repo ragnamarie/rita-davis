@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styled from "styled-components";
+import { imagesWorks } from "@/lib/imagesWorks";
 
 // 🧱 Styled components
 const PageWrapper = styled.div`
@@ -18,10 +19,9 @@ const Title = styled.h2`
   color: ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
   text-align: center;
 
-  /* Allow wrapping based on viewport width, not photo width */
-  width: 90vw; /* max width relative to screen */
-  max-width: 1200px; /* optional max width */
-  white-space: normal; /* allow wrapping */
+  width: 90vw;
+  max-width: 1200px;
+  white-space: normal;
   line-height: 1.4;
 `;
 
@@ -58,13 +58,13 @@ const TriangleButton = styled.button`
   ${({ direction, color }) =>
     direction === "left"
       ? `
-      border-right: 35px solid ${color};
-      left: -60px;
-    `
+    border-right: 35px solid ${color};
+    left: -60px;
+  `
       : `
-      border-left: 35px solid ${color};
-      right: -60px;
-    `}
+    border-left: 35px solid ${color};
+    right: -60px;
+  `}
 `;
 
 // 🧩 Component
@@ -72,40 +72,57 @@ export default function Works({ language }) {
   const isEN = language === "EN";
   const buttonColor = isEN ? "#ffdbf6" : "#007b1d";
 
-  const images = [
-    "/Works/ada-01.jpg",
-    "/Works/ada-02.jpg",
-    "/Works/ada-03.jpg",
-    "/Works/ada-04.jpg",
-    "/Works/ada-05.jpg",
-  ];
-
-  const [index, setIndex] = useState(0);
-
-  const nextImage = () => setIndex((prev) => (prev + 1) % images.length);
-  const prevImage = () =>
-    setIndex((prev) => (prev - 1 + images.length) % images.length);
+  // Extract unique projects
+  const projects = [...new Set(imagesWorks.map((img) => img.project))];
 
   return (
     <PageWrapper>
-      <GalleryWrapper>
+      {projects.map((project) => (
+        <ProjectGallery
+          key={project}
+          project={project}
+          isEN={isEN}
+          buttonColor={buttonColor}
+        />
+      ))}
+    </PageWrapper>
+  );
+}
+
+// 🧩 Project Gallery Component
+// 🧩 Project Gallery Component
+function ProjectGallery({ project, isEN, buttonColor }) {
+  const projectImages = imagesWorks.filter((img) => img.project === project);
+  const description = projectImages[0]?.description || "";
+
+  const [index, setIndex] = useState(0);
+
+  const nextImage = () => setIndex((prev) => (prev + 1) % projectImages.length);
+  const prevImage = () =>
+    setIndex(
+      (prev) => (prev - 1 + projectImages.length) % projectImages.length
+    );
+
+  const hasMultipleImages = projectImages.length > 1;
+
+  return (
+    <GalleryWrapper>
+      {hasMultipleImages && (
         <TriangleButton
           color={buttonColor}
           direction="left"
           onClick={prevImage}
         />
-        <Photo src={images[index]} alt={`Work ${index + 1}`} />
+      )}
+      <Photo src={projectImages[index].url} alt={`${project} ${index + 1}`} />
+      {hasMultipleImages && (
         <TriangleButton
           color={buttonColor}
           direction="right"
           onClick={nextImage}
         />
-        <Title isEN={isEN}>
-          {isEN
-            ? "Visuals for “Ada-Kaleh” play by DieOrdnung DerDinge and Franziska Seeberg. Designed with Stoodio Santiago da Silva and Sofia Clement. Germany, 2024."
-            : "Identidade visual para a peça “Ada-Kaleh” de DieOrdnung DerDinge e Franziska Seeberg. Em colaboração com Stoodio Santiago da Silva e Sofia Clement. Alemanha, 2024."}
-        </Title>
-      </GalleryWrapper>
-    </PageWrapper>
+      )}
+      {description && <Title isEN={isEN}>{description}</Title>}
+    </GalleryWrapper>
   );
 }
