@@ -3,11 +3,11 @@ import Works from "@/Components/Works";
 
 const StyledLink = styled.a`
   color: ${({ language }) => (language === "EN" ? "#ffdbf6" : "#007b1d")};
-`;
+  text-decoration: none;
 
-const Column = styled.div`
-  display: grid;
-  gap: 1rem;
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const CircleLink = styled.a`
@@ -24,25 +24,37 @@ const CircleLink = styled.a`
   text-align: center;
 `;
 
+const PageGrid = styled.div`
+  min-height: 80vh;
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 0.5fr;
+  gap: 2rem;
+  padding: 2rem;
+  align-items: start;
+
+  background-color: ${({ isEN }) => (isEN ? "#007b1d" : "#ffdbf6")};
+  color: ${({ isEN }) => (isEN ? "#ffdbf6" : "#007b1d")};
+
+  overflow-x: hidden;
+
+  /* 📱 Mobile fix */
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+`;
+
+const Column = styled.div`
+  display: grid;
+  gap: 1rem;
+`;
+
 export default function HomePage({ language }) {
   const isEN = language === "EN";
 
-  const styles = {
-    minHeight: "80vh",
-    backgroundColor: isEN ? "#007b1d" : "#ffdbf6",
-    color: isEN ? "#ffdbf6" : "#007b1d",
-    display: "grid",
-    gridTemplateColumns: "1.5fr 1.5fr 0.5fr", // two columns
-    gap: "2rem", // space between columns and rows
-    padding: "2rem",
-    alignItems: "start",
-    justifyContent: "center",
-    overflowY: "auto", // scroll if content is too tall
-  };
-
   return (
     <>
-      <div style={styles}>
+      <PageGrid isEN={isEN}>
         <Column>
           <div>
             {isEN ? (
@@ -62,6 +74,7 @@ export default function HomePage({ language }) {
               </>
             )}
           </div>
+
           <div>
             {isEN ? (
               <>
@@ -77,28 +90,41 @@ export default function HomePage({ language }) {
               </>
             )}
           </div>
+
           <CircleLink href="/teaching" language={language}>
             {isEN ? "more about teaching" : "mais sobre aulas e workshops"}
           </CircleLink>
+
           <div>
             {isEN ? (
               <>
-                Education: <br></br>BA in Graphic Design (Federal University of
-                Minas Gerais, Brazil 2013–2018)<br></br>BA in Graphic Design
-                (Budapest Metropolitan University of Applied Sciences, Hungary
-                2016)<br></br>MA in Graphic Design (Estonian Academy of Arts,
-                Estonia 2021–2023)
+                Education:
+                <br />
+                BA in Graphic Design (Federal University of Minas Gerais, Brazil
+                2013–2018)
+                <br />
+                BA in Graphic Design (Budapest Metropolitan University of
+                Applied Sciences, Hungary 2016)
+                <br />
+                MA in Graphic Design (Estonian Academy of Arts, Estonia
+                2021–2023)
               </>
             ) : (
               <>
-                Formação:<br></br>Bacharel em Design Gráfico (Universidade
-                Federal de Minas Gerais, Brasil 2013–2018)<br></br>Bacharel em
-                Design Gráfico (Budapest Metropolitan University of Applied
-                Sciences, Hungria 2016)<br></br>Mestre em Design Gráfico
-                (Estonian Academy of Arts, Estônia 2021–2023)
+                Formação:
+                <br />
+                Bacharel em Design Gráfico (Universidade Federal de Minas
+                Gerais, Brasil 2013–2018)
+                <br />
+                Bacharel em Design Gráfico (Budapest Metropolitan University of
+                Applied Sciences, Hungria 2016)
+                <br />
+                Mestre em Design Gráfico (Estonian Academy of Arts, Estônia
+                2021–2023)
               </>
             )}
           </div>
+
           <div>
             <StyledLink href="mailto:ritadrvc@gmail.com" language={language}>
               e-mail
@@ -121,6 +147,7 @@ export default function HomePage({ language }) {
             </StyledLink>
           </div>
         </Column>
+
         <Column>
           <div>
             {isEN ? (
@@ -143,6 +170,7 @@ export default function HomePage({ language }) {
               </>
             )}
           </div>
+
           <div>
             {isEN ? (
               <>
@@ -166,11 +194,11 @@ export default function HomePage({ language }) {
             )}
           </div>
         </Column>
-      </div>
+      </PageGrid>
+
       <Works language={language} />
     </>
   );
 }
 
-// Optional: tag to indicate which theme to use
 HomePage.pageTheme = "greenPink";
