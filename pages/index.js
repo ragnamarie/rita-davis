@@ -3,11 +3,7 @@ import Works from "@/Components/Works";
 
 const StyledLink = styled.a`
   color: ${({ language }) => (language === "EN" ? "#ffdbf6" : "#007b1d")};
-  text-decoration: none;
-
-  &:hover {
-    opacity: 0.8;
-  }
+  text-decoration: underlined;
 `;
 
 const CircleLink = styled.a`
