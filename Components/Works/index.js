@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { imagesWorks } from "@/lib/imagesWorks";
 
@@ -9,19 +9,6 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const Title = styled.h2`
-  position: absolute;
-  bottom: 30px;
-  font-size: 21px;
-  font-weight: 600;
-  color: ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
-  text-align: center;
-  width: 90vw;
-  max-width: 1200px;
-  white-space: normal;
-  line-height: 1.4;
 `;
 
 const GalleryWrapper = styled.div`
@@ -35,41 +22,28 @@ const GalleryWrapper = styled.div`
 
 const Photo = styled.img`
   height: auto;
-  width: 75%;
+  width: 75%; /* desktop-style size */
   object-fit: cover;
   transition: opacity 0.4s ease;
 `;
 
-const TriangleButton = styled.button`
-  all: unset;
-  cursor: pointer;
+const Title = styled.h2`
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  transition: transform 0.2s ease;
-  width: 0;
-  height: 0;
-
-  border-top: 25px solid transparent;
-  border-bottom: 25px solid transparent;
-
-  ${({ direction, color }) =>
-    direction === "left"
-      ? `
-    border-right: 35px solid ${color};
-    left: -60px;
-  `
-      : `
-    border-left: 35px solid ${color};
-    right: -60px;
-  `}
+  bottom: 30px;
+  font-size: 21px;
+  font-weight: 600;
+  color: ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
+  text-align: center;
+  width: 90vw;
+  max-width: 1200px;
+  white-space: normal;
+  line-height: 1.2;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
 `;
 
 // 🧩 Component
 export default function Works({ language }) {
   const isEN = language === "EN";
-  const buttonColor = isEN ? "#ffdbf6" : "#007b1d";
 
   // Extract unique projects
   const projects = [...new Set(imagesWorks.map((img) => img.project))];
@@ -77,30 +51,28 @@ export default function Works({ language }) {
   return (
     <PageWrapper>
       {projects.map((project) => (
-        <ProjectGallery
-          key={project}
-          project={project}
-          isEN={isEN}
-          buttonColor={buttonColor}
-        />
+        <ProjectGallery key={project} project={project} isEN={isEN} />
       ))}
     </PageWrapper>
   );
 }
 
 // 🧩 Project Gallery Component
-function ProjectGallery({ project, isEN, buttonColor }) {
+function ProjectGallery({ project, isEN }) {
   const projectImages = imagesWorks.filter((img) => img.project === project);
 
   const [index, setIndex] = useState(0);
 
-  const nextImage = () => setIndex((prev) => (prev + 1) % projectImages.length);
-  const prevImage = () =>
-    setIndex(
-      (prev) => (prev - 1 + projectImages.length) % projectImages.length
-    );
+  // ✅ Automatically cycle every 3 seconds
+  useEffect(() => {
+    if (projectImages.length <= 1) return;
 
-  const hasMultipleImages = projectImages.length > 1;
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % projectImages.length);
+    }, 3000); // 3 seconds
+
+    return () => clearInterval(interval); // cleanup
+  }, [projectImages.length]);
 
   // Choose description based on language
   const description = isEN
@@ -109,22 +81,8 @@ function ProjectGallery({ project, isEN, buttonColor }) {
 
   return (
     <GalleryWrapper>
-      {hasMultipleImages && (
-        <TriangleButton
-          color={buttonColor}
-          direction="left"
-          onClick={prevImage}
-        />
-      )}
       <Photo src={projectImages[index].url} alt={`${project} ${index + 1}`} />
       {description && <Title isEN={isEN}>{description}</Title>}
-      {hasMultipleImages && (
-        <TriangleButton
-          color={buttonColor}
-          direction="right"
-          onClick={nextImage}
-        />
-      )}
     </GalleryWrapper>
   );
 }

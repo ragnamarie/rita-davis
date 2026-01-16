@@ -30,7 +30,7 @@ const Title = styled.h2`
   bottom: 20px;
   width: 100%;
   padding: 0 16px;
-  font-size: 16px;
+  font-size: 21px;
   font-weight: 600;
   text-align: center;
   line-height: 1.2;
