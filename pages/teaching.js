@@ -1,5 +1,27 @@
+"use client";
+
 import styled from "styled-components";
 import TeachingPhotos from "@/Components/TeachingPhotos";
+
+const PageGrid = styled.div`
+  min-height: 65vh;
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 0.5fr;
+  gap: 2rem;
+  padding: 2rem;
+  align-items: start;
+  justify-content: center;
+  overflow-y: auto;
+
+  background-color: ${({ isEN }) => (isEN ? "#003db2" : "#ff9e33")};
+  color: ${({ isEN }) => (isEN ? "#ff9e33" : "#003db2")};
+
+  /* optional: make mobile responsive */
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    padding: 6rem 1rem;
+  }
+`;
 
 const Column = styled.div`
   display: grid;
@@ -12,10 +34,9 @@ const CircleLink = styled.a`
   justify-content: center;
   width: 100%;
   height: 3rem;
-  border: 3px solid
-    ${({ language }) => (language === "EN" ? "#ff9e33" : "#003db2")};
+  border: 3px solid ${({ isEN }) => (isEN ? "#ff9e33" : "#003db2")};
   border-radius: 50%;
-  color: ${({ language }) => (language === "EN" ? "#ff9e33" : "#003db2")};
+  color: ${({ isEN }) => (isEN ? "#ff9e33" : "#003db2")};
   text-decoration: none;
   text-align: center;
 `;
@@ -23,22 +44,9 @@ const CircleLink = styled.a`
 export default function TeachingPage({ language }) {
   const isEN = language === "EN";
 
-  const styles = {
-    minHeight: "65vh",
-    backgroundColor: isEN ? "#003db2" : "#ff9e33",
-    color: isEN ? "#ff9e33" : "#003db2",
-    display: "grid",
-    gridTemplateColumns: "1.5fr 1.5fr 0.5fr", // two columns
-    gap: "2rem", // space between columns and rows
-    padding: "2rem",
-    alignItems: "start",
-    justifyContent: "center",
-    overflowY: "auto", // scroll if content is too tall
-  };
-
   return (
     <>
-      <div style={styles}>
+      <PageGrid isEN={isEN}>
         <Column>
           <div>
             {isEN ? (
@@ -80,10 +88,11 @@ export default function TeachingPage({ language }) {
               </>
             )}
           </div>
-          <CircleLink href="/" language={language}>
+          <CircleLink href="/" isEN={isEN}>
             {isEN ? "back" : "voltar"}
           </CircleLink>
         </Column>
+
         <Column>
           <div>
             {isEN ? (
@@ -130,7 +139,8 @@ export default function TeachingPage({ language }) {
             )}
           </div>
         </Column>
-      </div>
+      </PageGrid>
+
       <TeachingPhotos language={language} />
     </>
   );
