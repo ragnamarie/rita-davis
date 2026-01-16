@@ -1,9 +1,14 @@
+"use client";
+
 import styled from "styled-components";
 import Works from "@/Components/Works";
+import WorksMobile from "@/Components/WorksMobile";
+
+/* ─────────── styled components ─────────── */
 
 const StyledLink = styled.a`
   color: ${({ language }) => (language === "EN" ? "#ffdbf6" : "#007b1d")};
-  text-decoration: underlined;
+  text-decoration: underline;
 `;
 
 const CircleLink = styled.a`
@@ -33,10 +38,9 @@ const PageGrid = styled.div`
 
   overflow-x: hidden;
 
-  /* 📱 Mobile fix */
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    padding: 1rem;
+    padding: 6rem 1rem;
   }
 `;
 
@@ -45,12 +49,15 @@ const Column = styled.div`
   gap: 1rem;
 `;
 
+/* ─────────── page component ─────────── */
+
 export default function HomePage({ language }) {
   const isEN = language === "EN";
 
   return (
     <>
       <PageGrid isEN={isEN}>
+        {/* ⬅️ YOUR CONTENT — unchanged */}
         <Column>
           <div>
             {isEN ? (
@@ -192,7 +199,43 @@ export default function HomePage({ language }) {
         </Column>
       </PageGrid>
 
-      <Works language={language} />
+      {/* ⬇️ Desktop / Mobile switch */}
+      <div className="desktop-only">
+        <Works language={language} />
+      </div>
+
+      <div className="mobile-only">
+        <WorksMobile language={language} />
+      </div>
+
+      {/* CSS visibility control */}
+      <style jsx>{`
+        .desktop-only {
+          display: none;
+        }
+
+        .mobile-only {
+          display: none;
+        }
+
+        @media (max-width: 768px) {
+          .desktop-only {
+            display: none;
+          }
+          .mobile-only {
+            display: block;
+          }
+        }
+
+        @media (min-width: 769px) {
+          .desktop-only {
+            display: block;
+          }
+          .mobile-only {
+            display: none;
+          }
+        }
+      `}</style>
     </>
   );
 }
