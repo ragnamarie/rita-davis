@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { imagesWorks } from "@/lib/imagesWorks";
 
@@ -12,76 +12,129 @@ const PageWrapper = styled.div`
 `;
 
 const GalleryWrapper = styled.div`
-  position: relative;
   width: 100%;
   max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ImageContainer = styled.div`
+  position: relative;
+  width: 75%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const Photo = styled.img`
+  width: 100%;
   height: auto;
-  width: 75%; /* desktop-style size */
   object-fit: cover;
-  transition: opacity 0.4s ease;
+`;
+
+const Arrow = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 2;
+`;
+
+const LeftArrow = styled(Arrow)`
+  left: -50px;
+  width: 0;
+  height: 0;
+  border-top: 18px solid transparent;
+  border-bottom: 18px solid transparent;
+  border-right: 28px solid ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
+`;
+
+const RightArrow = styled(Arrow)`
+  right: -50px;
+  width: 0;
+  height: 0;
+  border-top: 18px solid transparent;
+  border-bottom: 18px solid transparent;
+  border-left: 28px solid ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
 `;
 
 const Title = styled.h2`
-  position: absolute;
-  bottom: 30px;
   font-size: 21px;
   font-weight: 600;
   color: ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
   text-align: center;
-  width: 90vw;
-  max-width: 1200px;
-  white-space: normal;
+  width: 75%;
   line-height: 1.2;
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+  margin-top: 16px;
 `;
 
-// 🧩 Component
+// 🧩 Main Component
 export default function Works({ language }) {
   const isEN = language === "EN";
 
-  // Extract unique projects
-  const projects = [...new Set(imagesWorks.map((img) => img.project))];
+  // Group images by project
+  const projects = imagesWorks.reduce((groups, image) => {
+    if (!groups[image.project]) {
+      groups[image.project] = [];
+    }
+
+    groups[image.project].push(image);
+
+    return groups;
+  }, {});
 
   return (
     <PageWrapper>
-      {projects.map((project) => (
-        <ProjectGallery key={project} project={project} isEN={isEN} />
+      {Object.entries(projects).map(([project, projectImages]) => (
+        <ProjectGallery
+          key={project}
+          project={project}
+          projectImages={projectImages}
+          isEN={isEN}
+        />
       ))}
     </PageWrapper>
   );
 }
 
-// 🧩 Project Gallery Component
-function ProjectGallery({ project, isEN }) {
-  const projectImages = imagesWorks.filter((img) => img.project === project);
-
+// 🧩 Individual Project Gallery
+function ProjectGallery({ project, projectImages, isEN }) {
   const [index, setIndex] = useState(0);
 
-  // ✅ Automatically cycle every 3 seconds
-  useEffect(() => {
-    if (projectImages.length <= 1) return;
-
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % projectImages.length);
-    }, 3000); // 3 seconds
-
-    return () => clearInterval(interval); // cleanup
-  }, [projectImages.length]);
-
-  // Choose description based on language
   const description = isEN
     ? projectImages[0]?.description
     : projectImages[0]?.description_pt;
 
   return (
     <GalleryWrapper>
-      <Photo src={projectImages[index].url} alt={`${project} ${index + 1}`} />
+      <ImageContainer>
+        {/* Previous arrow */}
+        {index > 0 && (
+          <LeftArrow
+            isEN={isEN}
+            onClick={() => setIndex((prev) => prev - 1)}
+            aria-label={`Previous image in ${project}`}
+          />
+        )}
+
+        {/* Current image */}
+        <Photo src={projectImages[index].url} alt={`${project} ${index + 1}`} />
+
+        {/* Next arrow */}
+        {index < projectImages.length - 1 && (
+          <RightArrow
+            isEN={isEN}
+            onClick={() => setIndex((prev) => prev + 1)}
+            aria-label={`Next image in ${project}`}
+          />
+        )}
+      </ImageContainer>
+
+      {/* Project title/description */}
       {description && <Title isEN={isEN}>{description}</Title>}
     </GalleryWrapper>
   );

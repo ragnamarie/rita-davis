@@ -7,27 +7,29 @@ export default createGlobalStyle`
     box-sizing: border-box;
   }
 
-    #__next {
+  #__next {
     margin: 0;
-    min-height: 100vh; /* Change min-height to min-height: 100vh */
+    min-height: 100vh;
     min-width: 100%;
     display: flex;
-    flex-direction: column; /* Make sure the container is a column layout */
+    flex-direction: column;
   }
-  
-    html,
+
+  html,
   body {
     margin: 0;
     padding: 0;
     height: 100%;
-}
-    
-  body {
-  font-family: 'Helvetica', sans-serif;
-  font-weight: 700;
-  font-size: 21px;
-  line-height: 1.2;
   }
 
+  body {
+    font-family: 'Helvetica', sans-serif;
+    font-weight: 700;
+    font-size: 21px;
+    line-height: 1.2;
 
+    @media (max-width: 768px) {
+      font-size: 18px;
+    }
+  }
 `;
