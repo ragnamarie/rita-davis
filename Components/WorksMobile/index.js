@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { imagesWorks } from "@/lib/imagesWorks";
 
@@ -9,34 +9,73 @@ import { imagesWorks } from "@/lib/imagesWorks";
 const PageWrapper = styled.div`
   width: 100%;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const GalleryWrapper = styled.div`
-  position: relative;
   width: 100%;
   display: flex;
-  justify-content: center; /* centers image */
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ImageContainer = styled.div`
+  position: relative;
+  width: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Photo = styled.img`
-  width: 95%; /* same as desktop */
+  width: 100%;
   height: auto;
   object-fit: cover;
   display: block;
 `;
 
+const TitleRow = styled.div`
+  width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 0 8px 0;
+`;
+
+const Arrow = styled.button`
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+`;
+
+const LeftArrow = styled(Arrow)`
+  width: 0;
+  height: 0;
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+  border-right: 20px solid ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
+`;
+
+const RightArrow = styled(Arrow)`
+  width: 0;
+  height: 0;
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+  border-left: 20px solid ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
+`;
+
 const Title = styled.h2`
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  padding: 0 16px;
-  font-size: 21px;
+  margin: 0 2px;
+  font-size: 18px;
   font-weight: 600;
   text-align: center;
   line-height: 1.2;
 
   color: ${({ isEN }) => (isEN ? "#ffdbf6" : "#007b1d")};
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
 `;
 
 /* ─────────── component ─────────── */
@@ -44,12 +83,26 @@ const Title = styled.h2`
 export default function WorksMobile({ language }) {
   const isEN = language === "EN";
 
-  const projects = [...new Set(imagesWorks.map((img) => img.project))];
+  // Group images by project
+  const projects = imagesWorks.reduce((groups, image) => {
+    if (!groups[image.project]) {
+      groups[image.project] = [];
+    }
+
+    groups[image.project].push(image);
+
+    return groups;
+  }, {});
 
   return (
     <PageWrapper>
-      {projects.map((project) => (
-        <ProjectGalleryMobile key={project} project={project} isEN={isEN} />
+      {Object.entries(projects).map(([project, projectImages]) => (
+        <ProjectGalleryMobile
+          key={project}
+          project={project}
+          projectImages={projectImages}
+          isEN={isEN}
+        />
       ))}
     </PageWrapper>
   );
@@ -57,21 +110,8 @@ export default function WorksMobile({ language }) {
 
 /* ─────────── project gallery ─────────── */
 
-function ProjectGalleryMobile({ project, isEN }) {
-  const projectImages = imagesWorks.filter((img) => img.project === project);
-
+function ProjectGalleryMobile({ project, projectImages, isEN }) {
   const [index, setIndex] = useState(0);
-
-  // ✅ Automatically cycle every 3 seconds
-  useEffect(() => {
-    if (projectImages.length <= 1) return;
-
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % projectImages.length);
-    }, 3000); // 3 seconds
-
-    return () => clearInterval(interval); // cleanup
-  }, [projectImages.length]);
 
   const description = isEN
     ? projectImages[0]?.description
@@ -79,13 +119,37 @@ function ProjectGalleryMobile({ project, isEN }) {
 
   return (
     <GalleryWrapper>
-      <Photo
-        src={projectImages[index].url}
-        alt={`${project} ${index + 1}`}
-        draggable={false}
-      />
+      {/* Current image */}
+      <ImageContainer>
+        <Photo
+          src={projectImages[index].url}
+          alt={`${project} ${index + 1}`}
+          draggable={false}
+        />
+      </ImageContainer>
 
-      {description && <Title isEN={isEN}>{description}</Title>}
+      {/* Title with arrows */}
+      {description && (
+        <TitleRow>
+          {index > 0 && (
+            <LeftArrow
+              isEN={isEN}
+              onClick={() => setIndex((prev) => prev - 1)}
+              aria-label={`Previous image in ${project}`}
+            />
+          )}
+
+          <Title isEN={isEN}>{description}</Title>
+
+          {index < projectImages.length - 1 && (
+            <RightArrow
+              isEN={isEN}
+              onClick={() => setIndex((prev) => prev + 1)}
+              aria-label={`Next image in ${project}`}
+            />
+          )}
+        </TitleRow>
+      )}
     </GalleryWrapper>
   );
 }
