@@ -69,7 +69,6 @@ const Title = styled.h2`
   text-align: center;
   width: 75%;
   line-height: 1.2;
-  margin-top: 16px;
 `;
 
 // 🧩 Main Component

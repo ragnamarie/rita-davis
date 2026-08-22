@@ -19,7 +19,7 @@ const PageGrid = styled.div`
   /* optional: make mobile responsive */
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    padding: 6rem 1rem;
+    padding: 6rem 1rem 4rem;
   }
 `;
 
