@@ -48,24 +48,31 @@ const Photo = styled.img`
   flex-shrink: 0;
 `;
 
-const TriangleButton = styled.button`
+const Arrow = styled.button`
   all: unset;
   cursor: pointer;
-  width: 0;
-  height: 0;
+  width: 84px;
+  height: 48px;
+  flex-shrink: 0;
 
-  border-top: 18px solid transparent;
-  border-bottom: 18px solid transparent;
+  background-color: ${(props) => props.color};
 
-  ${({ direction, color }) =>
-    direction === "left"
-      ? `
-        border-right: 28px solid ${color};
-      `
-      : `
-        border-left: 28px solid ${color};
-      `}
+  mask-image: url("/arrows/arrow9.svg");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+
+  -webkit-mask-image: url("/arrows/arrow9.svg");
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
 `;
+
+const LeftArrow = styled(Arrow)`
+  transform: scaleX(-1);
+`;
+
+const RightArrow = styled(Arrow)``;
 
 export default function TeachingPhotos({ language }) {
   const isEN = language === "EN";
@@ -124,8 +131,7 @@ export default function TeachingPhotos({ language }) {
         <ArrowRow>
           <div>
             {canScrollLeft && (
-              <TriangleButton
-                direction="left"
+              <LeftArrow
                 color={arrowColor}
                 onClick={() => scrollGallery("left")}
                 aria-label="Scroll left"
@@ -135,8 +141,7 @@ export default function TeachingPhotos({ language }) {
 
           <div>
             {canScrollRight && (
-              <TriangleButton
-                direction="right"
+              <RightArrow
                 color={arrowColor}
                 onClick={() => scrollGallery("right")}
                 aria-label="Scroll right"

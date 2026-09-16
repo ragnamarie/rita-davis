@@ -36,35 +36,42 @@ const Photo = styled.img`
 const Arrow = styled.button`
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
   z-index: 2;
+
+  width: 84px;
+  height: 36px;
+
+  background-color: ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
+
+  mask-image: url(${(props) => props.arrowSrc});
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+
+  -webkit-mask-image: url(${(props) => props.arrowSrc});
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+
+  transform: translateY(-50%);
 `;
 
 const LeftArrow = styled(Arrow)`
-  left: -50px;
-  width: 0;
-  height: 0;
-  border-top: 18px solid transparent;
-  border-bottom: 18px solid transparent;
-  border-right: 28px solid ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
+  left: -100px;
+  transform: translateY(-50%) scaleX(-1);
 `;
 
 const RightArrow = styled(Arrow)`
-  right: -50px;
-  width: 0;
-  height: 0;
-  border-top: 18px solid transparent;
-  border-bottom: 18px solid transparent;
-  border-left: 28px solid ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
+  right: -100px;
 `;
 
 const Title = styled.h2`
   font-size: 21px;
   font-weight: 600;
+  padding-bottom: 21px;
   color: ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
   text-align: center;
   width: 75%;
@@ -88,12 +95,13 @@ export default function Works({ language }) {
 
   return (
     <PageWrapper>
-      {Object.entries(projects).map(([project, projectImages]) => (
+      {Object.entries(projects).map(([project, projectImages], index) => (
         <ProjectGallery
           key={project}
           project={project}
           projectImages={projectImages}
           isEN={isEN}
+          galleryIndex={index}
         />
       ))}
     </PageWrapper>
@@ -101,8 +109,12 @@ export default function Works({ language }) {
 }
 
 // 🧩 Individual Project Gallery
-function ProjectGallery({ project, projectImages, isEN }) {
+function ProjectGallery({ project, projectImages, isEN, galleryIndex }) {
   const [index, setIndex] = useState(0);
+
+  // Cycle through arrow1.svg → arrow13.svg → arrow1.svg...
+  const arrowNumber = (galleryIndex % 13) + 1;
+  const arrowSrc = `/arrows/arrow${arrowNumber}.svg`;
 
   const description = isEN
     ? projectImages[0]?.description
@@ -115,6 +127,7 @@ function ProjectGallery({ project, projectImages, isEN }) {
         {index > 0 && (
           <LeftArrow
             isEN={isEN}
+            arrowSrc={arrowSrc}
             onClick={() => setIndex((prev) => prev - 1)}
             aria-label={`Previous image in ${project}`}
           />
@@ -127,6 +140,7 @@ function ProjectGallery({ project, projectImages, isEN }) {
         {index < projectImages.length - 1 && (
           <RightArrow
             isEN={isEN}
+            arrowSrc={arrowSrc}
             onClick={() => setIndex((prev) => prev + 1)}
             aria-label={`Next image in ${project}`}
           />
