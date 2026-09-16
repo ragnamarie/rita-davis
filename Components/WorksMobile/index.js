@@ -72,6 +72,7 @@ const Title = styled.h2`
   margin: 0 2px;
   font-size: 18px;
   font-weight: 600;
+  padding-bottom: 18px;
   text-align: center;
   line-height: 1.2;
 

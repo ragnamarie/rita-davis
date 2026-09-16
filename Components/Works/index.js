@@ -65,6 +65,7 @@ const RightArrow = styled(Arrow)`
 const Title = styled.h2`
   font-size: 21px;
   font-weight: 600;
+  padding-bottom: 21px;
   color: ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
   text-align: center;
   width: 75%;
