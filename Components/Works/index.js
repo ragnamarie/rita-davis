@@ -114,7 +114,7 @@ function ProjectGallery({ project, projectImages, isEN, galleryIndex }) {
 
   // Cycle through arrow1.svg → arrow13.svg → arrow1.svg...
   const arrowNumber = (galleryIndex % 13) + 1;
-  const arrowSrc = `/arrows/arrow${arrowNumber}.svg`;
+  const arrowSrc = `/Arrows/arrow${arrowNumber}.svg`;
 
   const description = isEN
     ? projectImages[0]?.description
