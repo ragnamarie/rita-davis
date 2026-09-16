@@ -50,23 +50,28 @@ const Arrow = styled.button`
   padding: 0;
   cursor: pointer;
   flex-shrink: 0;
+
+  width: 28px;
+  height: 28px;
+
+  background-color: ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
+
+  mask-image: url(${(props) => props.arrowSrc});
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+
+  -webkit-mask-image: url(${(props) => props.arrowSrc});
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
 `;
 
 const LeftArrow = styled(Arrow)`
-  width: 0;
-  height: 0;
-  border-top: 14px solid transparent;
-  border-bottom: 14px solid transparent;
-  border-right: 20px solid ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
+  transform: scaleX(-1);
 `;
 
-const RightArrow = styled(Arrow)`
-  width: 0;
-  height: 0;
-  border-top: 14px solid transparent;
-  border-bottom: 14px solid transparent;
-  border-left: 20px solid ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
-`;
+const RightArrow = styled(Arrow)``;
 
 const Title = styled.h2`
   margin: 0 2px;
@@ -97,12 +102,13 @@ export default function WorksMobile({ language }) {
 
   return (
     <PageWrapper>
-      {Object.entries(projects).map(([project, projectImages]) => (
+      {Object.entries(projects).map(([project, projectImages], index) => (
         <ProjectGalleryMobile
           key={project}
           project={project}
           projectImages={projectImages}
           isEN={isEN}
+          galleryIndex={index}
         />
       ))}
     </PageWrapper>
@@ -111,8 +117,12 @@ export default function WorksMobile({ language }) {
 
 /* ─────────── project gallery ─────────── */
 
-function ProjectGalleryMobile({ project, projectImages, isEN }) {
+function ProjectGalleryMobile({ project, projectImages, isEN, galleryIndex }) {
   const [index, setIndex] = useState(0);
+
+  // Cycle through arrow1.svg → arrow13.svg → arrow1.svg...
+  const arrowNumber = (galleryIndex % 13) + 1;
+  const arrowSrc = `/arrows/arrow${arrowNumber}.svg`;
 
   const description = isEN
     ? projectImages[0]?.description
@@ -135,6 +145,7 @@ function ProjectGalleryMobile({ project, projectImages, isEN }) {
           {index > 0 && (
             <LeftArrow
               isEN={isEN}
+              arrowSrc={arrowSrc}
               onClick={() => setIndex((prev) => prev - 1)}
               aria-label={`Previous image in ${project}`}
             />
@@ -145,6 +156,7 @@ function ProjectGalleryMobile({ project, projectImages, isEN }) {
           {index < projectImages.length - 1 && (
             <RightArrow
               isEN={isEN}
+              arrowSrc={arrowSrc}
               onClick={() => setIndex((prev) => prev + 1)}
               aria-label={`Next image in ${project}`}
             />

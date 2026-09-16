@@ -46,17 +46,15 @@ const Arrow = styled.button`
 
   background-color: ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
 
-  mask-image: url("/arrows/arrow1.svg");
+  mask-image: url(${(props) => props.arrowSrc});
   mask-size: contain;
   mask-repeat: no-repeat;
   mask-position: center;
 
-  -webkit-mask-image: url("/arrows/arrow1.svg");
+  -webkit-mask-image: url(${(props) => props.arrowSrc});
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
-
-  background-color: ${(props) => (props.isEN ? "#ffdbf6" : "#007b1d")};
 
   transform: translateY(-50%);
 `;
@@ -97,12 +95,13 @@ export default function Works({ language }) {
 
   return (
     <PageWrapper>
-      {Object.entries(projects).map(([project, projectImages]) => (
+      {Object.entries(projects).map(([project, projectImages], index) => (
         <ProjectGallery
           key={project}
           project={project}
           projectImages={projectImages}
           isEN={isEN}
+          galleryIndex={index}
         />
       ))}
     </PageWrapper>
@@ -110,8 +109,12 @@ export default function Works({ language }) {
 }
 
 // 🧩 Individual Project Gallery
-function ProjectGallery({ project, projectImages, isEN }) {
+function ProjectGallery({ project, projectImages, isEN, galleryIndex }) {
   const [index, setIndex] = useState(0);
+
+  // Cycle through arrow1.svg → arrow13.svg → arrow1.svg...
+  const arrowNumber = (galleryIndex % 13) + 1;
+  const arrowSrc = `/arrows/arrow${arrowNumber}.svg`;
 
   const description = isEN
     ? projectImages[0]?.description
@@ -124,6 +127,7 @@ function ProjectGallery({ project, projectImages, isEN }) {
         {index > 0 && (
           <LeftArrow
             isEN={isEN}
+            arrowSrc={arrowSrc}
             onClick={() => setIndex((prev) => prev - 1)}
             aria-label={`Previous image in ${project}`}
           />
@@ -136,6 +140,7 @@ function ProjectGallery({ project, projectImages, isEN }) {
         {index < projectImages.length - 1 && (
           <RightArrow
             isEN={isEN}
+            arrowSrc={arrowSrc}
             onClick={() => setIndex((prev) => prev + 1)}
             aria-label={`Next image in ${project}`}
           />
