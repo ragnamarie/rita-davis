@@ -57,12 +57,12 @@ const Arrow = styled.button`
 
   background-color: ${(props) => props.color};
 
-  mask-image: url("/arrows/arrow9.svg");
+  mask-image: url("/Arrows/arrow9.svg");
   mask-size: contain;
   mask-repeat: no-repeat;
   mask-position: center;
 
-  -webkit-mask-image: url("/arrows/arrow9.svg");
+  -webkit-mask-image: url("/Arrows/arrow9.svg");
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
